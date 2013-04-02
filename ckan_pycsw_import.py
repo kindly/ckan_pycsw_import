@@ -215,11 +215,13 @@ def get_record(context, repo, ckan_url, ckan_id, ckan_info):
         xml = etree.parse(io.BytesIO(response.content))
     except Exception, err:
         LOGGER.error('Could not pass xml doc from %s, Error: %s' % (ckan_id, err))
+        return
 
     try:
         record = metadata.parse_record(context, xml, repo)[0]
     except Exception, err:
         LOGGER.error('Could not extract metadata from %s, Error: %s' % (ckan_id, err))
+        return
 
     if not record.identifier:
         record.identifier = ckan_id
